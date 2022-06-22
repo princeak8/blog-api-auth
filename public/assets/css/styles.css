@@ -1,0 +1,7 @@
+
+@media screen and (max-width: 767px) {
+    .side-count{
+      display: inline-block !important;
+      margin: 0!important;
+      padding: 0!important;
+    } }
