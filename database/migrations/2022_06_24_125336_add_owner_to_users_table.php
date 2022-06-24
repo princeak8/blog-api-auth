@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('owner')->default(1)->after('role');
-            $table->dropColumn('name');
+            $table->boolean('owner')->default(0)->after('role');
         });
     }
 
