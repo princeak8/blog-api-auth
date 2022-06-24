@@ -20,9 +20,6 @@
                           {!! Form::open(["url"=>"register_user", "method"=>"post", "class"=>"user"]) !!}
                             @include('inc.message')
                               <div class="form-group">
-                                  <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName" placeholder="Name" value="{{old('name')}}">
-                              </div>
-                              <div class="form-group">
                                   <input type="text" name="domain" class="form-control form-control-user" id="exampleDomain" placeholder="Account Domain" value="{{old('domain')}}">
                               </div>
                               <div class="form-group">
