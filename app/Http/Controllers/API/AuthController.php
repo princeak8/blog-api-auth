@@ -30,6 +30,7 @@ class AuthController extends Controller
                         'error' => 'Wrong Username or Password'
                     ], 401);
                 }
+                dd(auth::user()->domain_name." == ".$post['domain_name']);
                 if(auth::user()->domain_name == $post['domain_name']) { 
                     //The domain name where the request was sent has to match with the registered domain name of the blog for security reasons
                     $user = new UserResource(auth::user());
