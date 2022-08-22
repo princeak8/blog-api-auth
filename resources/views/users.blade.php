@@ -19,16 +19,22 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
                                     <th>Domain</th>
+                                    <th>Domain Name</th>
+                                    <th>Email Address</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 
                                 <tbody>
                                 @foreach($users as $user)
                                 <tr>
-                                    <td>{{$user->name}}</td>
                                     <td>{{$user->domain}}</td>
+                                    <td>{{$user->domain_name}}</td>
+                                    <td>{{$user->email}}</td>
+                                    <td>
+                                        <button class="btn btn-warning">Edit</button>
+                                    </td>
                                 </tr>
                                 @endforeach          
                                 </tbody>
