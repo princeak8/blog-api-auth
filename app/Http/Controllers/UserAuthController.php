@@ -43,7 +43,7 @@ class UserAuthController extends Controller
                     ], 401);
                 }
                 //dd(auth('api')->user());
-                if(auth('api')->user()->domain_name == $post['domain_name']) { 
+                if('admin.'.auth('api')->user()->domain_name == $post['domain_name']) { 
                     //The domain name where the request was sent has to match with the registered domain name of the blog for security reasons
                     $user = new UserResource(auth('api')->user());
                     return response()->json([
