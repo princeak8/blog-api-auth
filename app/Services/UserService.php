@@ -25,15 +25,10 @@ class UserService
      * @return \App\User A user object
      *
      */
-    public function getUserByEmail($email, $includeBlocked=false)
+    public function getUserByEmail($email)
     {
-        try{
-            $user = ($includeBlocked) ? User::with(['posts.comments', 'comments'])->where('email', $email)->first()
-                    : User::with(['posts.comments', 'comments'])->where('blocked', 0)->where('email', $email)->first();
-            return $user;
-        }catch(UserNotFoundException $e){
-            throw $e->getMessage().' in '.$e->getFile().' line '.$e->getLine();
-        }
+        return User::where('email', $email)->first();
+            
     }
 
     /**
