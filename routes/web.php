@@ -23,6 +23,7 @@ Route::get('/logout', 'AdminAuthController@logout');
 
 Route::get('register', 'UserController@register');
 Route::post('register_user', 'UserController@add_user');
+Route::post('update_user', 'UserController@update_user');
 Route::get('users', 'UserController@users');
 
 Route::get('/', 'IndexController@index');

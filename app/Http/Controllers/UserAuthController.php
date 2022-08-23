@@ -112,9 +112,9 @@ class UserAuthController extends Controller
                 if($apiPasswordResetToken) {
                     $user->notify(new APIPasswordResetNotification($token));
                     return response()->json([
-                                    'statusCode' => 200,
-                                    'message' => 'A password reset code has been sent to your mail'
-                                ], 200);
+                        'statusCode' => 200,
+                        'message' => 'A password reset code has been sent to your mail'
+                    ], 200);
                 }else{
                     return response()->json([
                         'statusCode' => 401,

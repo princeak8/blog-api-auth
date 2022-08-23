@@ -30,10 +30,16 @@
                                 @foreach($users as $user)
                                 <tr>
                                     <td>{{$user->domain}}</td>
-                                    <td>{{$user->domain_name}}</td>
-                                    <td>{{$user->email}}</td>
+                                    <td class="change-field">
+                                        <span class="domain-name">{{$user->domain_name}}</span>
+                                        <input type="hidden" name="domain_name" value="{{$user->domain_name}}" /> 
+                                    </td>
+                                    <td class="change-field">
+                                        <span class="email">{{$user->email}}</span>
+                                        <input type="hidden" name="email" value="{{$user->email}}" /> 
+                                    </td>
                                     <td>
-                                        <button class="btn btn-warning">Edit</button>
+                                        <button class="btn btn-warning edit-action" data-edit="0" data-id="{{$user->id}}">Edit</button>
                                     </td>
                                 </tr>
                                 @endforeach          
@@ -54,6 +60,48 @@
 
 @section('js')
     <script type="application/javascript">
+        $('.edit-action').click(function() {
+            let edit = $(this).data('edit');
+            if(edit==0) {
+                $(this).data('edit', 1);
+                $(this).removeClass('btn-warning');
+                $(this).addClass('btn-success');
+                $(this).html('Save');
+                $('.change-field').each(function() {
+                    $(this).children('span').addClass('d-none');
+                    $(this).children('input').attr('type', 'text');
+                })
+            }else{
+                var domain_name = $('input[name=domain_name]').val();
+                var email = $('input[name=email]').val();
+                var id = $(this).data('id');
+                var url = "{{url('update_user')}}";
+                var token = $('meta[name="csrf-token"]').attr('content');
+                var formData =  {id, domain_name, email, _token: token};
+                var state = $(this);
+                axios.post(url, formData)
+                .then((res) => {
+                    console.log(res.data);
+                    $('.change-field').each(function() {
+                        $(this).children('.domain-name').html(domain_name);
+                        $(this).children('input[name=domain_name]').val(domain_name);
+                        $(this).children('.email').html(email);
+                        $(this).children('input[name=email]').val(email);
+                    })
+                })
+                $(this).data('edit', 0);
+                $(this).removeClass('btn-success');
+                $(this).addClass('btn-warning');
+                $(this).html('Edit');
+                $('.change-field').each(function() {
+                    $(this).children('span').removeClass('d-none');
+                    $(this).children('input').attr('type', 'hidden');
+                })
+            }
+        })
+
+
+
         $('.activateToggle').click(function() {
             //message('An Error occured while attempting to perform your operation', false);
             var active = ($(this).data('active')==1) ? 0 : 1;

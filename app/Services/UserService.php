@@ -60,6 +60,13 @@ class UserService
     {
         return User::where('role', 'user')->get();
     }
+
+    public function update($data, $user)
+    {
+        $user->domain_name = $data['domain_name'];
+        $user->email = $data['email'];
+        $user->update();
+    }
     
 }
 
