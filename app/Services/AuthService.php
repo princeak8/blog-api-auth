@@ -55,7 +55,6 @@ class AuthService
     public function validationPasswordResetToken($data)
     {
         //dd(hash('md5', $data['password_reset_code']));
-        try{
             $resetToken = ApiPasswordResetToken::where('token_signature', hash('md5', $data['password_reset_code']))
                                                 ->where('token_type', APIPasswordResetToken::$PASSWORD_RESET_TOKEN)
                                                 ->first();
@@ -88,9 +87,6 @@ class AuthService
             return [
                 "token" => $token
             ];
-        }catch(\Exception $e){
-            throw $e;
-        }
     }
 
     /**
@@ -103,7 +99,6 @@ class AuthService
      */
     public function validatePasswordVerifToken($data)
     {
-        try{
             $verifToken = ApiPasswordResetToken::where('token_signature', hash('md5', $data['token']))
                                                 ->where('token_type', APIPasswordResetToken::$PASSWORD_VERIF_TOKEN)
                                                 ->first();
@@ -127,9 +122,6 @@ class AuthService
             return [
                 'token' => $verifToken
             ];
-        }catch(\Exception $e){
-            throw $e->getMessage().' in '.$e->getFile().' line '.$e->getLine();
-        }
     }
 
     public function clearTokens($token)
