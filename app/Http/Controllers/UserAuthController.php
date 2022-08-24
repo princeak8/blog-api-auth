@@ -184,6 +184,7 @@ class UserAuthController extends Controller
                 $this->authService->clearTokens($res['token']);
                 return response()->json([
                     'statusCode' => 200,
+                    'data' => $user->password,
                     'message' => 'Operation Successfull'
                 ], 200);
             }
