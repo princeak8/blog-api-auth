@@ -51,7 +51,8 @@ class APIPasswordResetNotification extends Notification
                 ->line('If you did not request a password reset, please ignore this message. ')
                 // ->action('Notification Action', url('/'))
                 // ->line('Thank you for using our application!');
-                ->subject('Password reset request');
+                ->subject('Password reset request')
+                ->from(env($this->domain.'_MAIL_FROM_ADDRESS'), env($this->domain.'_MAIL_FROM_NAME'));
     }
 
     /**
