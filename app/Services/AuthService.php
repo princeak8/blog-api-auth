@@ -114,11 +114,6 @@ class AuthService
                     'token' => false
                 ];
             }
-            $user = User::find($verifToken->user_id);
-            if($user && $user->email_verified == 0) {
-                $user->email_verified = 1;
-                $user->update();
-            }
             return [
                 'token' => $verifToken
             ];
