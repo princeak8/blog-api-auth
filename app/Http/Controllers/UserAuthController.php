@@ -107,7 +107,7 @@ class UserAuthController extends Controller
         try{
             if(isset($data['domain'])) {
                 $user = $this->userService->getUserByEmail($data["email"]);
-                if(auth::user()->email == $data["email"]) {
+                if(auth('api')::user()->email == $data["email"]) {
                     $token = $this->authService->genResetCode($user->id);
                     $apiPasswordResetToken = $this->authService->savePasswordResetToken($user, $token);
                     if($apiPasswordResetToken) {
