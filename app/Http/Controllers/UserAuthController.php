@@ -154,7 +154,7 @@ class UserAuthController extends Controller
                 return response()->json([
                     'statusCode' => 200,
                     'message' => 'Code verified successfully',
-                    'token' => $res['token']
+                    'data' => $res['token']
                 ], 200);
             }else{
                 return response()->json([
