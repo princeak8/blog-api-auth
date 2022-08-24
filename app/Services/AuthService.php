@@ -157,16 +157,11 @@ class AuthService
 
     public function getTokenByUserIdSignature($user_id, $signature)
     {
-        try{
-            return ApiPasswordResetToken::where('user_id', $user_id)->where('token_signature', $signature)->first();
-        }catch(\Exception $e){
-            throw $e->getMessage().' in '.$e->getFile().' line '.$e->getLine();
-        }
+        return ApiPasswordResetToken::where('user_id', $user_id)->where('token_signature', $signature)->first();
     }
 
     public function savePasswordResetToken($user, $token)
     {
-        try{
             $this->clearUserTokens($user->id);
             $signature = hash('md5', $token);
             // $resetToken = ApiPasswordResetToken::where('user_id', $user->id)->first();
@@ -179,14 +174,10 @@ class AuthService
             $apiPasswordResetToken->expires_at = Carbon::now()->addMinutes(30);
             $apiPasswordResetToken->save();
             return $apiPasswordResetToken;
-        }catch(\Exception $e){
-            throw $e->getMessage().' in '.$e->getFile().' line '.$e->getLine();
-        }
     }
 
     public function savePasswordVerifToken($user, $token)
     {
-        try{
             $apiPasswordResetToken = ApiPasswordResetToken::create([
                 "user_id" => $token->user_id,
                 "token_signature" => hash('md5', $token),
@@ -194,10 +185,7 @@ class AuthService
                 "token_type" => ApiPasswordResetToken::$PASSWORD_VERIF_TOKEN,
                 "expires_at" => Carbon::now()->addMinutes(30),
             ]);
-            return $apiPasswordResetToken;
-        }catch(\Exception $e){
-            throw $e->getMessage().' in '.$e->getFile().' line '.$e->getLine();
-        }
+        return $apiPasswordResetToken;
     }
 
     public function apiPasswordTokens()
