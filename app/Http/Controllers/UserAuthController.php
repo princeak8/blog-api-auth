@@ -105,31 +105,42 @@ class UserAuthController extends Controller
     {
         $data = $request->all();
         try{
-            $user = $this->userService->getUserByEmail($data["email"]);
-            if($user) {
-                $token = $this->authService->genResetCode($user->id);
-                $apiPasswordResetToken = $this->authService->savePasswordResetToken($user, $token);
-                if($apiPasswordResetToken) {
-                    $user->notify(new APIPasswordResetNotification($token));
-                    return response()->json([
-                        'statusCode' => 200,
-                        'message' => 'A password reset code has been sent to your mail'
-                    ], 200);
-                }else{
-                    return response()->json([
-                        'statusCode' => 401,
-                        'message' => "Token was not able to be saved.. please try again or contact the admin"
-                    ], 401);
+            if(isset($data['domain'])) {
+                $user = $this->userService->getUserByEmail($data["email"]);
+                if($user) {
+                    $token = $this->authService->genResetCode($user->id);
+                    $apiPasswordResetToken = $this->authService->savePasswordResetToken($user, $token);
+                    if($apiPasswordResetToken) {
+                        $user->notify(new APIPasswordResetNotification($token, $data['domain']));
+                        return response()->json([
+                            'statusCode' => 200,
+                            'message' => 'A password reset code has been sent to your mail'
+                        ], 200);
+                    }else{
+                        return response()->json([
+                            'statusCode' => 402,
+                            'message' => "Token was not able to be saved.. please try again or contact the admin"
+                        ], 402);
+                    }
                 }
+                $errorMsg = (!$user) ? 'Incorrect email' : 'Password reset process has already begun, Please check your mail for your password reset code';
+                return response()->json([
+                    'statusCode' => 402,
+                    'message' => $errorMsg
+                ], 402);
+            }else{
+                return response()->json([
+                    'statusCode' => 500,
+                    'message' => "domain is not set"
+                ], 500);
             }
-            $errorMsg = (!$user) ? 'Incorrect email' : 'Password reset process has already begun, Please check your mail for your password reset code';
-            return response()->json([
-                'statusCode' => 401,
-                'message' => $errorMsg
-            ], 401);
         }catch(\Exception $e){
             if(isset($apiPasswordResetToken)) $apiPasswordResetToken->delete();
-            throw $e;
+            \Log::stack(['project'])->info($e->getMessage().' in '.$e->getFile().' at Line '.$e->getLine().' ActiveUser: '.auth::user());
+            return response()->json([
+                'statusCode' => 500,
+                'message' => 'An error occured while trying to perform this operation, Please try again later or contact support'
+            ], 500);
         }
     }
 

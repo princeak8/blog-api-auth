@@ -17,9 +17,10 @@ class APIPasswordResetNotification extends Notification
      *
      * @return void
      */
-    public function __construct($code)
+    public function __construct($code, $domain)
     {
         $this->reset_code = $code;
+        $this->domain = $domain;
     }
 
     /**
@@ -42,6 +43,7 @@ class APIPasswordResetNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+                ->mailer($this->domain)
                 ->greeting('Hello!')
                 ->line('A password reset for the account associated with this email has been requested.')
                 ->line('Please enter the code below in your password reset page')

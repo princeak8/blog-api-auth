@@ -1,6 +1,6 @@
 <?php
 
-return [
+$mailConfig = [
 
     /*
     |--------------------------------------------------------------------------
@@ -42,6 +42,7 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
+            'auth_mode' => null,
         ],
 
         'ses' => [
@@ -115,3 +116,24 @@ return [
     ],
 
 ];
+
+function add_new_smtp_mailer($mailConfig, $mailer, $host, $username, $password) {
+    $mailConfig['mailers'][$mailer] =  $mailConfig['mailers']['smtp'];
+    $mailConfig['mailers'][$mailer]['host'] = $host;
+    $mailConfig['mailers'][$mailer]['username'] = $username;
+    $mailConfig['mailers'][$mailer]['password'] = $password;
+    return $mailConfig;
+} 
+
+$newMailers = [
+    ["name"=>"nnedi", "host"=>env('nnedi_MAIL_HOST'), "username"=>env('nnedi_MAIL_USERNAME'), "password"=>env('nnedi_MAIL_PASSWORD')],
+    ["name"=>"blog", "host"=>env('blog_MAIL_HOST'), "username"=>env('blog_MAIL_USERNAME'), "password"=>env('blog_MAIL_PASSWORD')]
+];
+
+if(count($newMailers) > 0) {
+    foreach($newMailers as $mailer) {
+        $mailConfig = add_new_smtp_mailer($mailConfig, $mailer['name'], $mailer['host'], $mailer['username'], $mailer['password']);
+    }
+}
+
+return $mailConfig;
