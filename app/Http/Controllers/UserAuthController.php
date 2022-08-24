@@ -107,7 +107,7 @@ class UserAuthController extends Controller
         try{
             if(isset($data['domain'])) {
                 $user = $this->userService->getUserByEmail($data["email"]);
-                if($user) {
+                if(auth::user()->email == $data["email"]) {
                     $token = $this->authService->genResetCode($user->id);
                     $apiPasswordResetToken = $this->authService->savePasswordResetToken($user, $token);
                     if($apiPasswordResetToken) {
@@ -122,12 +122,12 @@ class UserAuthController extends Controller
                             'message' => "Token was not able to be saved.. please try again or contact the admin"
                         ], 402);
                     }
+                }else{
+                    return response()->json([
+                        'statusCode' => 402,
+                        'message' => "Wrong email"
+                    ], 402);
                 }
-                $errorMsg = (!$user) ? 'Incorrect email' : 'Password reset process has already begun, Please check your mail for your password reset code';
-                return response()->json([
-                    'statusCode' => 402,
-                    'message' => $errorMsg
-                ], 402);
             }else{
                 return response()->json([
                     'statusCode' => 500,

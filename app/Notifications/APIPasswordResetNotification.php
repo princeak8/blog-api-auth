@@ -48,6 +48,7 @@ class APIPasswordResetNotification extends Notification
                 ->line('A password reset for the account associated with this email has been requested.')
                 ->line('Please enter the code below in your password reset page')
                 ->line(new HtmlString('<strong style="text-align: center">' . $this->reset_code . '</strong>'))
+                ->line('Please note that the above code will expire in the next 30mins')
                 ->line('If you did not request a password reset, please ignore this message. ')
                 // ->action('Notification Action', url('/'))
                 // ->line('Thank you for using our application!');
