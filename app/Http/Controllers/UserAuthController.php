@@ -158,12 +158,16 @@ class UserAuthController extends Controller
                 ], 200);
             }else{
                 return response()->json([
-                    'statusCode' => 422,
+                    'statusCode' => 402,
                     'message' => $res['error']
-                ], 422);
+                ], 402);
             }
         }catch(\Exception $e){
-            throw $e;
+            \Log::stack(['project'])->info($e->getMessage().' in '.$e->getFile().' at Line '.$e->getLine().' ActiveUser: '.auth::user());
+            return response()->json([
+                'statusCode' => 500,
+                'message' => 'An error occured while trying to perform this operation, Please try again later or contact support'
+            ], 500);
         }
     }
 
@@ -184,11 +188,15 @@ class UserAuthController extends Controller
                 ], 200);
             }
             return response()->json([
-                'statusCode' => 422,
+                'statusCode' => 402,
                 'message' => $res['error']
-            ], 422);
+            ], 402);
         }catch(\Exception $e){
-            throw $e;
+            \Log::stack(['project'])->info($e->getMessage().' in '.$e->getFile().' at Line '.$e->getLine().' ActiveUser: '.auth::user());
+            return response()->json([
+                'statusCode' => 500,
+                'message' => 'An error occured while trying to perform this operation, Please try again later or contact support'
+            ], 500);
         }
     }
 
