@@ -19,19 +19,15 @@ class AuthService
 
     public function genResetCode($user_id)
     {
-        try{
-            do{
-                $token = '';
-                for($i=0; $i<4; $i++) {
-                    $token .= mt_rand(0, 9);
-                }
-                $signature = hash('md5', $token);
-                $exists = $this->getTokenByUserIdSignature($user_id, $signature);
-            } while ($exists);
-            return $token;
-        }catch(\Exception $e){
-            throw $e->getMessage().' in '.$e->getFile().' line '.$e->getLine();
-        }
+        do{
+            $token = '';
+            for($i=0; $i<4; $i++) {
+                $token .= mt_rand(0, 9);
+            }
+            $signature = hash('md5', $token);
+            $exists = $this->getTokenByUserIdSignature($user_id, $signature);
+        } while ($exists);
+        return $token;
     }
 
     public function checkIfPasswordResetProcessIsOnGoing($user_id)
