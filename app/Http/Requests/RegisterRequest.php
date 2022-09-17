@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use Illuminate\Validation\Rule;
+
 class RegisterRequest extends FormRequest
 {
     /**
@@ -23,11 +25,18 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'domain' => 'required|string',
             'domain_name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
+            // 'email' => 'required|string|email|unique:users',
             'password' => 'required|string'
         ];
+
+        $rules['email'] = [
+            'required','email', 'string', 'max:255', 
+            Rule::unique("users")->where(fn ($query) => $query->where("role", 'user'))
+        ];
+
+        return $rules;
     }
 }
